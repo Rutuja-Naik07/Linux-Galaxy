@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Linux Notes: Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7f4;--surface:#fff;--ink:#1c2230;--mute:#566074;--line:#d9ddd6;--a:#0b6b63;--b:#b45309;--c:#6d3fc0;--code:#eef1ec;--term:#14202b;--termink:#d7e6dc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151c;--surface:#171e28;--ink:#e6ebf2;--mute:#9aa6ba;--line:#2a3443;--a:#4fd1c0;--b:#f0a85a;--c:#b69cf5;--code:#1d2632;--term:#0a0f15;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10151c;--surface:#171e28;--ink:#e6ebf2;--mute:#9aa6ba;--line:#2a3443;--a:#4fd1c0;--b:#f0a85a;--c:#b69cf5;--code:#1d2632;--term:#0a0f15;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "IBM Plex Sans",system-ui,sans-serif}
+code,pre,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:6px;align-items:center;padding:10px 16px;overflow-x:auto}
+nav b{margin-right:auto;white-space:nowrap}
+nav a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 14px;border-radius:99px;border:1px solid var(--line);font-size:15px}
+nav a.l1{border-color:var(--a)}nav a.l2{border-color:var(--b)}nav a.l3{border-color:var(--c)}
+nav a:hover,nav a:focus-visible{background:var(--code);outline:2px solid var(--ink);outline-offset:1px}
+main{max-width:860px;margin:0 auto;padding:0 20px 80px}
+.hero{padding:48px 0 24px}
+h1{font-size:clamp(34px,6vw,54px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mute);max-width:56ch;margin:0 0 24px}
+.term{background:var(--term);color:var(--termink);border-radius:10px;padding:16px 18px;font-size:15px;min-height:178px;overflow:hidden;line-height:1.55}
+.term .bar{display:flex;gap:6px;margin-bottom:12px}.term .bar i{width:11px;height:11px;border-radius:50%;background:#44515f}
+.term .p{color:#6fd3a3}.term .o{color:#9db0c4;display:block;white-space:pre-wrap}
+.cur{display:inline-block;width:8px;height:1em;background:var(--termink);vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+section.lv{margin-top:56px;padding-top:8px;border-top:4px solid var(--a)}
+section.lv.m{border-color:var(--b)}section.lv.x{border-color:var(--c)}
+h2{font-size:32px;margin:18px 0 4px;letter-spacing:-.01em}
+.sub{color:var(--mute);margin:0 0 20px}
+h3{font-size:21px;margin:36px 0 8px}
+p{margin:0 0 14px;max-width:70ch}
+code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.9em}
+pre{background:var(--term);color:var(--termink);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.55;margin:10px 0 18px}
+pre .c{color:#7f93a8}
+.tw{overflow-x:auto;margin:10px 0 20px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}th{background:var(--code)}
+td:first-child{font-family:"IBM Plex Mono",monospace;white-space:nowrap;font-size:14px}
+.note{border-left:4px solid var(--b);background:var(--surface);padding:10px 16px;margin:14px 0 20px;border-radius:0 8px 8px 0}
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0 22px}
+.lab h4{margin:0 0 10px;font-size:16px}
+.tree{font-family:"IBM Plex Mono",monospace;font-size:14.5px;line-height:1.9}
+.tree button{font:inherit;background:none;border:0;color:var(--a);cursor:pointer;padding:0 2px;text-align:left}
+.tree button:hover,.tree button:focus-visible{text-decoration:underline;outline:none}
+.tree ul{list-style:none;margin:0;padding-left:22px;border-left:1px dashed var(--line)}
+.tree>ul{border:0;padding:0}
+.tree li ul{display:none}.tree li.open>ul{display:block;animation:dn .25s ease-out}
+@keyframes dn{from{opacity:0;transform:translateY(-4px)}}
+.tree .d{color:var(--mute);font-family:"IBM Plex Sans",sans-serif;font-size:14px;margin-left:8px}
+.perm{display:grid;grid-template-columns:auto repeat(3,1fr);gap:8px 10px;align-items:center;max-width:420px}
+.perm label{display:flex;gap:6px;align-items:center;cursor:pointer;user-select:none}
+.perm input{accent-color:var(--a);width:18px;height:18px}
+.permout{font-size:22px;margin-top:14px}
+.permout b{color:var(--a)}
+.pipe{display:flex;align-items:center;gap:0;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:14px;margin:10px 0}
+.pipe .st{background:var(--code);border:1px solid var(--line);padding:8px 12px;border-radius:6px}
+.pipe .ar{position:relative;width:54px;height:4px;background:var(--line);margin:0 4px;overflow:hidden;border-radius:2px}
+.pipe .ar::after{content:"";position:absolute;top:0;left:-14px;width:14px;height:4px;background:var(--b);animation:fl 1.4s linear infinite}
+@keyframes fl{to{left:54px}}
+.boot{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 20px}
+.boot span{background:var(--surface);border:1px solid var(--c);padding:6px 12px;border-radius:6px;font-size:14px;opacity:.25;animation:lit 6s infinite}
+.boot span:nth-child(2){animation-delay:1s}.boot span:nth-child(3){animation-delay:2s}.boot span:nth-child(4){animation-delay:3s}.boot span:nth-child(5){animation-delay:4s}.boot span:nth-child(6){animation-delay:5s}
+@keyframes lit{0%,16%{opacity:1;background:var(--code)}17%,100%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.boot span{opacity:1}}
+footer{margin-top:60px;color:var(--mute);font-size:15px}
+</style>
+</head>
+<body>
+<nav aria-label="Levels"><b>Linux notes</b><a class="l1" href="#beginner">Beginner</a><a class="l2" href="#intermediate">Intermediate</a><a class="l3" href="#advanced">Advanced</a></nav>
+<main>
+<header class="hero">
+<h1>Linux notes, from first command to production</h1>
+<p>Three levels, each one building on the last. Run the commands in a terminal as you read. Folders, permissions and pipes below are interactive.</p>
+<div class="term" aria-label="Animated terminal demo"><div class="bar"><i></i><i></i><i></i></div><div id="t"></div></div>
+</header>
+
+<section class="lv" id="beginner">
+<h2>Beginner</h2><p class="sub">Get comfortable moving around, handling files, and understanding permissions.</p>
+
+<h3>What Linux is</h3>
+<p>Linux is a kernel: the core program that talks to your hardware. A distribution (Ubuntu, Fedora, Debian, Arch) bundles the kernel with tools, a package manager and a desktop. You control it mostly through a shell, such as <code>bash</code>, which reads the commands you type.</p>
+
+<h3>The filesystem</h3>
+<p>Everything hangs off one root, <code>/</code>. There are no drive letters. Click a folder to open it.</p>
+<div class="lab"><div class="tree" id="tree"></div></div>
+
+<h3>Essential commands</h3>
+<div class="tw"><table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td>pwd</td><td>Show the current directory</td></tr>
+<tr><td>ls -la</td><td>List all files with details, including hidden ones</td></tr>
+<tr><td>cd /path, cd ~, cd -</td><td>Move to a path, home, or the previous directory</td></tr>
+<tr><td>mkdir -p a/b/c</td><td>Create nested directories</td></tr>
+<tr><td>touch f.txt</td><td>Create an empty file or update its timestamp</td></tr>
+<tr><td>cp -r src dst</td><td>Copy files or folders</td></tr>
+<tr><td>mv old new</td><td>Move or rename</td></tr>
+<tr><td>rm -r dir</td><td>Delete. There is no recycle bin, so double-check</td></tr>
+<tr><td>cat, less, head, tail -f</td><td>Read files; <code>tail -f</code> follows a growing log</td></tr>
+<tr><td>man cmd, cmd --help</td><td>Built-in documentation</td></tr>
+<tr><td>sudo cmd</td><td>Run one command as the administrator</td></tr>
+</table></div>
+<div class="note">Tip: press <code>Tab</code> to autocomplete, <code>↑</code> for history, and <code>Ctrl+C</code> to stop a running command.</div>
+
+<h3>Permissions</h3>
+<p>Each file has read (4), write (2) and execute (1) rights for three groups: owner, group and others. Add the numbers to get one digit per group. Tick the boxes to see the mode.</p>
+<div class="lab"><h4>chmod calculator</h4>
+<div class="perm" id="perm"></div>
+<div class="permout mono" id="pout"></div></div>
+<pre>chmod 755 script.sh      <span class="c"># owner rwx, others r-x</span>
+chmod u+x script.sh      <span class="c"># add execute for owner</span>
+chown alice:dev file     <span class="c"># change owner and group</span></pre>
+</section>
+
+<section class="lv m" id="intermediate">
+<h2>Intermediate</h2><p class="sub">Combine small tools, manage processes and users, and automate with scripts.</p>
+
+<h3>Pipes and redirection</h3>
+<p>Each program does one job. A pipe (<code>|</code>) feeds the output of one into the next.</p>
+<div class="pipe"><span class="st">cat access.log</span><span class="ar"></span><span class="st">grep 404</span><span class="ar"></span><span class="st">sort | uniq -c</span><span class="ar"></span><span class="st">head</span></div>
+<pre>cmd &gt; out.txt     <span class="c"># overwrite file with output</span>
+cmd &gt;&gt; out.txt    <span class="c"># append</span>
+cmd 2&gt; err.txt    <span class="c"># send errors only</span>
+cmd &gt; all.txt 2&gt;&amp;1   <span class="c"># both streams</span>
+cmd &lt; in.txt      <span class="c"># read input from a file</span></pre>
+
+<h3>Searching and text processing</h3>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Example</th></tr>
+<tr><td>grep</td><td><code>grep -rni "error" /var/log</code> searches recursively, ignoring case</td></tr>
+<tr><td>find</td><td><code>find . -name "*.py" -mtime -7</code> finds Python files changed in 7 days</td></tr>
+<tr><td>sed</td><td><code>sed -i 's/old/new/g' f.txt</code> replaces text in place</td></tr>
+<tr><td>awk</td><td><code>awk '{print $1,$3}' f.txt</code> prints columns 1 and 3</td></tr>
+<tr><td>sort, uniq, wc, cut</td><td>Order, count and slice lines or fields</td></tr>
+</table></div>
+
+<h3>Processes</h3>
+<pre>ps aux | grep nginx   <span class="c"># find a process</span>
+top   /   htop        <span class="c"># live view</span>
+kill 1234             <span class="c"># polite stop (SIGTERM)</span>
+kill -9 1234          <span class="c"># force stop (SIGKILL), last resort</span>
+cmd &amp;                 <span class="c"># run in background</span>
+jobs; fg %1; bg %1    <span class="c"># manage background jobs</span>
+nohup cmd &amp;           <span class="c"># survive logout</span></pre>
+
+<h3>Users and packages</h3>
+<pre>sudo useradd -m -s /bin/bash bob
+sudo passwd bob
+sudo usermod -aG sudo bob   <span class="c"># give admin rights</span>
+id bob
+
+sudo apt update &amp;&amp; sudo apt install git   <span class="c"># Debian/Ubuntu</span>
+sudo dnf install git                       <span class="c"># Fedora/RHEL</span>
+sudo pacman -S git                         <span class="c"># Arch</span></pre>
+
+<h3>Shell scripting</h3>
+<pre>#!/bin/bash
+set -euo pipefail          <span class="c"># stop on errors and unset variables</span>
+name="${1:-world}"         <span class="c"># first argument, default "world"</span>
+for f in *.log; do
+  if [ -s "$f" ]; then echo "$f has data"; fi
+done
+echo "Hello, $name"</pre>
+<p>Make it runnable with <code>chmod +x script.sh</code>, then run <code>./script.sh Ana</code>. Always quote variables (<code>"$f"</code>) so spaces in names do not break things.</p>
+
+<h3>Disks and archives</h3>
+<pre>df -h              <span class="c"># free space per filesystem</span>
+du -sh * | sort -h <span class="c"># what is using space here</span>
+tar -czf bk.tar.gz dir/    <span class="c"># create archive</span>
+tar -xzf bk.tar.gz         <span class="c"># extract</span></pre>
+</section>
+
+<section class="lv x" id="advanced">
+<h2>Advanced</h2><p class="sub">Run services, secure and tune machines, and understand what is under the hood.</p>
+
+<h3>Boot sequence</h3>
+<p>Watch each stage light up in order.</p>
+<div class="boot"><span>Firmware (UEFI)</span><span>Bootloader (GRUB)</span><span>Kernel + initramfs</span><span>systemd (PID 1)</span><span>Services start</span><span>Login</span></div>
+
+<h3>systemd services</h3>
+<pre>systemctl status nginx
+sudo systemctl enable --now nginx   <span class="c"># start now and at boot</span>
+sudo systemctl restart nginx
+journalctl -u nginx -f --since "1 hour ago"
+
+<span class="c"># /etc/systemd/system/app.service</span>
+[Unit]
+Description=My app
+After=network.target
+[Service]
+ExecStart=/usr/bin/node /srv/app/index.js
+Restart=on-failure
+User=app
+[Install]
+WantedBy=multi-user.target</pre>
+<p>After editing a unit file, run <code>sudo systemctl daemon-reload</code>.</p>
+
+<h3>Networking and SSH</h3>
+<pre>ip addr; ip route          <span class="c"># interfaces and routes</span>
+ss -tulpn                  <span class="c"># listening ports and owners</span>
+curl -I https://example.com
+dig example.com; traceroute example.com
+
+ssh-keygen -t ed25519
+ssh-copy-id user@host
+ssh -L 8080:localhost:80 user@host   <span class="c"># local port forward</span>
+sudo ufw allow 22/tcp &amp;&amp; sudo ufw enable</pre>
+<div class="note">Harden SSH: in <code>/etc/ssh/sshd_config</code> set <code>PasswordAuthentication no</code> and <code>PermitRootLogin no</code>, then restart <code>sshd</code>.</div>
+
+<h3>Scheduling</h3>
+<pre>crontab -e
+<span class="c"># min hour day month weekday  command</span>
+30 2 * * *   /srv/backup.sh     <span class="c"># daily at 02:30</span>
+*/5 * * * *  /srv/check.sh      <span class="c"># every 5 minutes</span></pre>
+
+<h3>Performance and troubleshooting</h3>
+<div class="tw"><table>
+<tr><th>Symptom</th><th>First tools</th></tr>
+<tr><td>High CPU</td><td><code>top</code>, <code>pidstat 1</code>, <code>perf top</code></td></tr>
+<tr><td>Memory pressure</td><td><code>free -h</code>, <code>vmstat 1</code>, <code>/proc/meminfo</code></td></tr>
+<tr><td>Slow disk</td><td><code>iostat -x 1</code>, <code>iotop</code></td></tr>
+<tr><td>Network issue</td><td><code>ss -s</code>, <code>tcpdump -i eth0 port 443</code></td></tr>
+<tr><td>Mystery behaviour</td><td><code>strace -p PID</code>, <code>lsof -p PID</code>, <code>dmesg -T</code></td></tr>
+</table></div>
+
+<h3>Containers under the hood</h3>
+<p>A container is an ordinary process with limits. Namespaces control what it can see (processes, network, mounts, users). Cgroups control what it can use (CPU, memory, I/O). Try <code>unshare --pid --fork --mount-proc bash</code> to get a shell that sees only its own processes.</p>
+
+<h3>Security checklist</h3>
+<p>Apply updates automatically, use SSH keys only, run services as non-root users, keep a firewall default-deny, review <code>sudo -l</code> and SUID files with <code>find / -perm -4000 2&gt;/dev/null</code>, and consider SELinux or AppArmor for mandatory access control. Back up with a tested restore, not just a backup.</p>
+
+<h3>Kernel and tuning</h3>
+<pre>uname -r; lsmod            <span class="c"># kernel version, loaded modules</span>
+sysctl net.ipv4.ip_forward
+echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/99-tune.conf
+sudo sysctl --system
+ulimit -n                  <span class="c"># open files limit</span></pre>
+</section>
+<footer>Next steps: practise on a virtual machine, read <code>man</code> pages, and automate one chore each week.</footer>
+</main>
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var seq=[["whoami","student"],["pwd","/home/student"],["ls","Documents  Downloads  notes.txt"],["cat /etc/os-release | head -1","NAME=\"Ubuntu\""],["echo \"Learning Linux\" > goal.txt","" ]];
+var el=document.getElementById('t');
+function line(c,o){return '<span class="p">student@linux:~$</span> '+c+(o?'<span class="o">'+o+'</span>':'');}
+if(reduce){el.innerHTML=seq.map(function(s){return line(s[0],s[1])+'<br>'}).join('');}
+else{
+var si=0,out=[];
+(function next(){
+ var s=seq[si%seq.length];if(si%seq.length===0)out=[];
+ var i=0;
+ (function type(){
+  el.innerHTML=out.join('<br>')+(out.length?'<br>':'')+'<span class="p">student@linux:~$</span> '+s[0].slice(0,i).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'<span class="cur"></span>';
+  if(i++<s[0].length)return setTimeout(type,55);
+  setTimeout(function(){out.push(line(s[0].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'),s[1]));si++;
+   el.innerHTML=out.join('<br>')+'<br><span class="p">student@linux:~$</span> <span class="cur"></span>';
+   setTimeout(next,si%seq.length===0?2200:900);},350);
+ })();
+})();
+}
+var T=[["/",[["bin","essential commands"],["etc","system configuration files"],["home",[["student","your files; also written ~"],["alice","another user"]]],["var",[["log","system and app logs"],["www","web content"]]],["usr",[["bin","installed programs"],["local","software you add yourself"]]],["tmp","temporary files, cleared on reboot"],["dev","devices appear as files"],["proc","live kernel and process info"]]]];
+function build(n){var u=document.createElement('ul');n.forEach(function(x){var li=document.createElement('li');
+ if(Array.isArray(x[1])){var b=document.createElement('button');b.textContent='▸ '+x[0]+'/';b.setAttribute('aria-expanded','false');
+  b.onclick=function(){var o=li.classList.toggle('open');b.textContent=(o?'▾ ':'▸ ')+x[0]+'/';b.setAttribute('aria-expanded',o);};
+  li.appendChild(b);li.appendChild(build(x[1]));}
+ else{li.innerHTML='&nbsp;&nbsp;'+x[0]+'/<span class="d"></span>';li.lastChild.textContent=x[1];}
+ u.appendChild(li);});return u;}
+var tr=document.getElementById('tree');tr.appendChild(build(T[0][1]));
+var ps=document.getElementById('perm'),po=document.getElementById('pout');
+var rows=['Owner','Group','Others'],bits=['Read','Write','Execute'],inp=[];
+ps.innerHTML='<span></span>'+bits.map(function(b){return '<b>'+b+'</b>'}).join('');
+rows.forEach(function(r,ri){var s=document.createElement('span');s.textContent=r;ps.appendChild(s);
+ bits.forEach(function(b,bi){var l=document.createElement('label');var c=document.createElement('input');c.type='checkbox';c.setAttribute('aria-label',r+' '+b);
+  c.checked=(ri===0)||(bi!==1);c.onchange=upd;l.appendChild(c);ps.appendChild(l);inp.push(c);});});
+function upd(){var sym='',num='';for(var r=0;r<3;r++){var n=0;for(var b=0;b<3;b++){var on=inp[r*3+b].checked;sym+=on?'rwx'[b]:'-';if(on)n+=[4,2,1][b];}num+=n;}
+ po.innerHTML='-'+sym+' &nbsp;=&nbsp; <b>chmod '+num+'</b>';}
+upd();
+})();
+</script>
+</body>
+</html>
